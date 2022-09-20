@@ -1,7 +1,11 @@
 'use strict';
 
-const { Session } = require('inspector');
-const { promisify } = require('util');
+const {
+  Session
+} = require('node:inspector');
+const {
+  promisify
+} = require('util');
 
 class CoverageInstrumenter {
   constructor() {
@@ -21,16 +25,18 @@ class CoverageInstrumenter {
     });
   }
 
-  async stopInstrumenting() {
-    const {result} = await this.postSession(
+  async getCoverage() {
+    const {
+      result
+    } = await this.postSession(
       'Profiler.takePreciseCoverage',
     );
+    return result
+  }
 
+  async stopInstrumenting() {
     await this.postSession('Profiler.stopPreciseCoverage');
-
     await this.postSession('Profiler.disable');
-
-    return result;
   }
 }
 
